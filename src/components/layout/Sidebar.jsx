@@ -1,7 +1,8 @@
 import { ROUTES, SIDEBAR_LINKS } from '../../lib/constants'
+import { getCurrentRoute } from '../../app/routes/router'
 
 export function Sidebar({ navigate }) {
-  const current = window.location.hash.replace('#', '') || ROUTES.dashboard
+  const current = getCurrentRoute() || ROUTES.dashboard
 
   return (
     <aside className="sidebar">

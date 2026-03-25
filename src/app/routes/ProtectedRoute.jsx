@@ -1,5 +1,6 @@
 import { useAuth } from '../../features/auth/useAuth'
 import { ROUTES } from '../../lib/constants'
+import { navigate } from './router'
 
 export function ProtectedRoute({ children }) {
   const { isAuthenticated, loading } = useAuth()
@@ -9,7 +10,7 @@ export function ProtectedRoute({ children }) {
   }
 
   if (!isAuthenticated) {
-    window.location.hash = ROUTES.login
+    navigate(ROUTES.login, { replace: true })
     return null
   }
 

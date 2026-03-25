@@ -10,30 +10,21 @@ import { ROUTES } from '../../lib/constants'
 import { useAuth } from '../../features/auth/useAuth'
 import { ProtectedRoute } from './ProtectedRoute'
 import { PublicRoute } from './PublicRoute'
-
-function getRoute() {
-  const hash = window.location.hash.replace('#', '')
-  return hash || ROUTES.dashboard
-}
-
-function navigate(path) {
-  window.location.hash = path
-}
+import { getCurrentRoute, navigate, subscribeToRouteChange } from './router'
 
 export function AppRoutes() {
-  const [route, setRoute] = useState(getRoute)
+  const [route, setRoute] = useState(getCurrentRoute)
   const { user } = useAuth()
 
   useEffect(() => {
-    const syncRoute = () => setRoute(getRoute())
-    window.addEventListener('hashchange', syncRoute)
+    const syncRoute = () => setRoute(getCurrentRoute())
     syncRoute()
-    return () => window.removeEventListener('hashchange', syncRoute)
+    return subscribeToRouteChange(syncRoute)
   }, [])
 
   useEffect(() => {
-    if (!window.location.hash) {
-      navigate(user ? ROUTES.dashboard : ROUTES.login)
+    if (window.location.pathname === '/') {
+      navigate(user ? ROUTES.dashboard : ROUTES.login, { replace: true })
     }
   }, [user])
 

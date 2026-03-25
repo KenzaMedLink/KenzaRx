@@ -1,5 +1,6 @@
 import { useAuth } from '../../features/auth/useAuth'
 import { ROUTES } from '../../lib/constants'
+import { navigate } from './router'
 
 export function PublicRoute({ children }) {
   const { isAuthenticated, loading } = useAuth()
@@ -9,7 +10,7 @@ export function PublicRoute({ children }) {
   }
 
   if (isAuthenticated) {
-    window.location.hash = ROUTES.dashboard
+    navigate(ROUTES.dashboard, { replace: true })
     return null
   }
 
